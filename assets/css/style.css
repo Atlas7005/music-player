@@ -73,7 +73,7 @@ main img#cover {
     width: 100%;
     height: auto;
     border-radius: 1.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     aspect-ratio: 1/1;
 }
 
@@ -107,7 +107,7 @@ main .details > * > * {
 main .progress-container {
     display: flex;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 2rem;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.35);
     height: 1.8rem;

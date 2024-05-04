@@ -75,6 +75,7 @@
                             const { title, artist, picture } = tags.tags;
                             console.log(picture.data, picture.format, new Blob([picture.data], { type: picture.format }));
                             cover.src = URL.createObjectURL(new Blob([picture.data], { type: picture.format }));
+                            cover.load();
                             document.getElementById("title").textContent = title;
                             document.getElementById("artist").textContent = artist;
                             audio.src = URL.createObjectURL(e1.target.files[0]);

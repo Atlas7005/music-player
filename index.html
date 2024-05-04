@@ -13,6 +13,7 @@
         <script defer>
             window.addEventListener("load", () => {
                 const audio = new Audio();
+                const coverImg = new Image();
                 audio.loop = false;
                 audio.autoplay = false;
                 audio.volume = 0.05;
@@ -74,8 +75,8 @@
                         onSuccess: (tags) => {
                             const { title, artist, picture } = tags.tags;
                             console.log(picture.data, picture.format, new Blob([picture.data], { type: picture.format }));
-                            cover.src = URL.createObjectURL(new Blob([picture.data], { type: picture.format }));
-                            cover.load();
+                            coverImg.src = URL.createObjectURL(new Blob([picture.data], { type: picture.format }));
+                            coverImg.load();
                             document.getElementById("title").textContent = title;
                             document.getElementById("artist").textContent = artist;
                             audio.src = URL.createObjectURL(e1.target.files[0]);
@@ -84,7 +85,8 @@
                             audio.onloadedmetadata = () => {
                                 durationEl.textContent = formatTime(audio.duration);
                             };
-                            cover.onload = () => {
+                            coverImg.onload = () => {
+                                cover.src = coverImg.src;
                                 const [r, g, b] = colorThief.getColor(cover);
                                 let rgbAdd = 24;
                                 document.body.style.backgroundColor = `rgb(${r},${g},${b})`;

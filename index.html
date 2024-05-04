@@ -44,7 +44,7 @@
                     progressBar.style.width = `${progress}%`;
                     currentTimeEl.textContent = formatTime(audio.currentTime);
                     durationEl.textContent = formatTime(audio.duration);
-                    backgroundCover.style.transform = `rotate(${audio.currentTime * 2}deg)`;
+                    backgroundCover.style.transform = `rotate(${audio.currentTime * 6}deg)`;
                 });
 
                 audio.addEventListener("ended", () => {
@@ -72,6 +72,8 @@
                 });
 
                 songPicker.addEventListener("change", (e1) => {
+                    document.getElementById("title").style.animationDuration = "0s";
+                    document.getElementById("artist").style.animationDuration = "0s";
                     window.jsmediatags.read(e1.target.files[0], {
                         onSuccess: (tags) => {
                             const { title, artist, picture } = tags.tags;
@@ -88,11 +90,17 @@
                             }
                             if (title) {
                                 document.getElementById("title").textContent = title;
+                                if (document.getElementById("title").clientWidth > document.querySelector(".details").clientWidth) {
+                                    document.getElementById("title").style.animationDuration = `${document.getElementById("title").clientWidth / 50}s`;
+                                }
                             } else {
                                 document.getElementById("title").textContent = "Unknown Title";
                             }
                             if (artist) {
                                 document.getElementById("artist").textContent = artist;
+                                if (document.getElementById("artist").clientWidth > document.querySelector(".details").clientWidth) {
+                                    document.getElementById("artist").style.animationDuration = `${document.getElementById("artist").clientWidth / 50}s`;
+                                }
                             } else {
                                 document.getElementById("artist").textContent = "Unknown Artist";
                             }
@@ -109,7 +117,6 @@
                                 const [r, g, b] = colorThief.getColor(cover);
                                 let rgbAdd = 24;
                                 document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
-                                backgroundCover.style.filter = "blur(10px)";
 
                                 if (r + g + b > 382) {
                                     document.body.style.color = "rgba(0,0,0,0.8)";
@@ -140,8 +147,8 @@
         <main>
             <img src="assets/no-cover.png" alt="" id="cover" />
             <div class="details">
-                <h2 id="title">Song Name</h2>
-                <h3 id="artist">Artist Name</h3>
+                <h2><span id="title">Song Name</span></h2>
+                <h3><span id="artist">Artist Name</span></h3>
             </div>
             <div class="progress-container">
                 <div class="progress"></div>

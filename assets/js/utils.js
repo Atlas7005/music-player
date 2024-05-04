@@ -127,22 +127,3 @@ function formatTime(seconds) {
     let remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
 }
-
-/**
- * Converts base64 to ArrayBuffer. (ex. data:audio/mpeg;base64)
- *
- * @param {string} base64 - The base64 string to convert.
- * @returns {ArrayBuffer} - The converted ArrayBuffer.
- */
-function base64ToArrayBuffer(base64) {
-    base64 = base64.replace(/^data:audio\/mpeg;base64,/, "");
-    let binaryString = window.atob(base64);
-    let len = binaryString.length;
-    let bytes = new Uint8Array(len);
-
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    return bytes.buffer;
-}

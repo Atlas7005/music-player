@@ -26,6 +26,20 @@ body {
     height: 100vh;
 }
 
+body > img#coverBackground {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    object-fit: cover;
+    z-index: -1;
+    overflow: hidden;
+    transition: transform 0.5s linear;
+    filter: blur(75px);
+    opacity: 0.5;
+}
+
 h1 {
     font-size: 5.6rem;
     font-weight: 700;

@@ -85,6 +85,9 @@
 
                             audio.onloadedmetadata = () => {
                                 durationEl.textContent = formatTime(audio.duration);
+                                progressBar.style.width = "0%";
+                                pause.classList.remove("fa-circle-pause");
+                                pause.classList.add("fa-circle-play");
                             };
                             cover.onload = () => {
                                 const [r, g, b] = colorThief.getColor(cover);

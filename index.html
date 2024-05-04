@@ -73,7 +73,7 @@
                     window.jsmediatags.read(e1.target.files[0], {
                         onSuccess: (tags) => {
                             const { title, artist, picture } = tags.tags;
-                            if (picture) {
+                            if (picture && picture.data) {
                                 let base64String = "";
                                 for (let i = 0; i < picture.data.length; i++) {
                                     base64String += String.fromCharCode(picture.data[i]);

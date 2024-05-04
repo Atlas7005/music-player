@@ -44,11 +44,11 @@ h3 {
 main {
     display: flex;
     flex-direction: column;
-    max-width: 28%;
 }
 
 main img#cover {
-    width: 640px;
+    max-width: 640px;
+    width: 100%;
     height: auto;
     border-radius: 1.5rem;
     margin-bottom: 1rem;
@@ -89,6 +89,8 @@ main .controls {
     gap: 3.4rem;
     margin: 0 auto;
     align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 main .controls i {
@@ -107,6 +109,7 @@ main .admin {
     gap: 1rem;
     margin-top: 1rem;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 main .admin input[type="range"] {
@@ -162,4 +165,10 @@ main .admin input[type="file"] + label svg {
     margin-top: -0.25em;
     margin-right: 0.25em;
     overflow: hidden;
+}
+
+@media screen and (max-width: 769px) {
+    main {
+        padding: 0 1.5rem;
+    }
 }

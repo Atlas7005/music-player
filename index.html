@@ -73,13 +73,25 @@
                     window.jsmediatags.read(e1.target.files[0], {
                         onSuccess: (tags) => {
                             const { title, artist, picture } = tags.tags;
-                            let base64String = "";
-                            for (let i = 0; i < picture.data.length; i++) {
-                                base64String += String.fromCharCode(picture.data[i]);
+                            if (picture) {
+                                let base64String = "";
+                                for (let i = 0; i < picture.data.length; i++) {
+                                    base64String += String.fromCharCode(picture.data[i]);
+                                }
+                                cover.src = `data:${picture.format};base64,${window.btoa(base64String)}`;
+                            } else {
+                                cover.src = "assets/no-cover.png";
                             }
-                            cover.src = `data:${picture.format};base64,${window.btoa(base64String)}`;
-                            document.getElementById("title").textContent = title;
-                            document.getElementById("artist").textContent = artist;
+                            if (title) {
+                                document.getElementById("title").textContent = title;
+                            } else {
+                                document.getElementById("title").textContent = "Unknown Title";
+                            }
+                            if (artist) {
+                                document.getElementById("artist").textContent = artist;
+                            } else {
+                                document.getElementById("artist").textContent = "Unknown Artist";
+                            }
                             audio.src = URL.createObjectURL(e1.target.files[0]);
                             audio.load();
 

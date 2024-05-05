@@ -12,10 +12,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.4.0/color-thief.umd.min.js" integrity="sha512-+6KJrxJ2dM2fT1GH0Icwx3PE2OtAVZ0IRdgQaQoGf+gd3WSxgBpgqX/rOiUHQ9LG/c4KHeXRz8nLOg+rXL1KUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script defer>
             window.addEventListener("load", () => {
-                const audio = new Audio();
-                audio.loop = false;
-                audio.autoplay = false;
-                audio.volume = 0.05;
+                window.audio = new Audio();
+                window.audio.loop = false;
+                window.audio.autoplay = false;
+                window.audio.volume = 0.05;
                 const colorThief = new ColorThief();
 
                 let ogQueue = [];
@@ -65,11 +65,11 @@
                     if (queue.length > 1) {
                         currentSong = currentSong === 0 ? queue.length - 1 : currentSong - 1;
                         loadFile(queue[currentSong], true);
-                        audio.play();
+                        window.audio.play();
                     }
                 });
                 pause.addEventListener("click", () => {
-                    audio.paused ? audio.play() : audio.pause();
+                    window.audio.paused ? window.audio.play() : window.audio.pause();
                 });
                 forwardBtn.addEventListener("click", () => {
                     if (queue.length > 1) {
@@ -84,10 +84,10 @@
                         }
                     } else {
                         if (repeat) {
-                            audio.currentTime = 0;
-                            audio.play();
+                            window.audio.currentTime = 0;
+                            window.audio.play();
                         } else {
-                            audio.pause();
+                            window.audio.pause();
                         }
                     }
                 });
@@ -112,15 +112,15 @@
                     }
                 });
 
-                audio.addEventListener("timeupdate", () => {
-                    const progress = (audio.currentTime / audio.duration) * 100;
+                window.audio.addEventListener("timeupdate", () => {
+                    const progress = (window.audio.currentTime / window.audio.duration) * 100;
                     progressBar.style.width = `${progress}%`;
-                    currentTimeEl.textContent = formatTime(audio.currentTime);
-                    durationEl.textContent = formatTime(audio.duration);
-                    backgroundCover.style.transform = `rotate(${audio.currentTime * 6}deg)`;
+                    currentTimeEl.textContent = formatTime(window.audio.currentTime);
+                    durationEl.textContent = formatTime(window.audio.duration);
+                    backgroundCover.style.transform = `rotate(${window.audio.currentTime * 6}deg)`;
                 });
 
-                audio.addEventListener("ended", () => {
+                window.audio.addEventListener("ended", () => {
                     if (queue.length > 1) {
                         if (currentSong === queue.length - 1) {
                             if (repeat) {
@@ -133,26 +133,26 @@
                         }
                     } else {
                         if (repeat) {
-                            audio.currentTime = 0;
-                            audio.play();
+                            window.audio.currentTime = 0;
+                            window.audio.play();
                         } else {
-                            audio.pause();
+                            window.audio.pause();
                         }
                     }
                 });
 
-                audio.addEventListener("pause", () => {
+                window.audio.addEventListener("pause", () => {
                     pause.classList.remove("fa-circle-pause");
                     pause.classList.add("fa-circle-play");
                 });
 
-                audio.addEventListener("play", () => {
+                window.audio.addEventListener("play", () => {
                     pause.classList.remove("fa-circle-play");
                     pause.classList.add("fa-circle-pause");
                 });
 
                 volume.addEventListener("input", () => {
-                    audio.volume = volume.value / 100;
+                    window.audio.volume = volume.value / 100;
                 });
 
                 document.onkeydown = (e) => {
@@ -166,7 +166,7 @@
                     const { left, width } = progressBar.parentElement.getBoundingClientRect();
                     const progress = ((clientX - left) / width) * 100;
                     progressBar.style.width = `${progress}%`;
-                    audio.currentTime = (progress / 100) * audio.duration;
+                    window.audio.currentTime = (progress / 100) * window.audio.duration;
                 });
 
                 songPicker.addEventListener("change", (e) => {
@@ -230,14 +230,14 @@
                             } else {
                                 document.title = "Music Player";
                             }
-                            audio.src = URL.createObjectURL(file);
-                            audio.load();
+                            window.audio.src = URL.createObjectURL(file);
+                            window.audio.load();
 
-                            audio.onloadedmetadata = () => {
-                                durationEl.textContent = formatTime(audio.duration);
+                            window.audio.onloadedmetadata = () => {
+                                durationEl.textContent = formatTime(window.audio.duration);
                                 progressBar.style.width = "0%";
                                 if (autoplay) {
-                                    audio.play();
+                                    window.audio.play();
                                 } else {
                                     pause.classList.remove("fa-circle-pause");
                                     pause.classList.add("fa-circle-play");

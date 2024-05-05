@@ -28,15 +28,7 @@
 
                 const pause = document.getElementById("pause");
                 pause.addEventListener("click", () => {
-                    if (audio.paused) {
-                        audio.play();
-                        pause.classList.remove("fa-circle-play");
-                        pause.classList.add("fa-circle-pause");
-                    } else {
-                        audio.pause();
-                        pause.classList.remove("fa-circle-pause");
-                        pause.classList.add("fa-circle-play");
-                    }
+                    audio.paused ? audio.play() : audio.pause();
                 });
 
                 audio.addEventListener("timeupdate", () => {
@@ -51,6 +43,16 @@
                     progressBar.style.width = "100%";
                     pause.classList.remove("fa-circle-pause");
                     pause.classList.add("fa-circle-play");
+                });
+
+                audio.addEventListener("pause", () => {
+                    pause.classList.remove("fa-circle-pause");
+                    pause.classList.add("fa-circle-play");
+                });
+
+                audio.addEventListener("play", () => {
+                    pause.classList.remove("fa-circle-play");
+                    pause.classList.add("fa-circle-pause");
                 });
 
                 volume.addEventListener("input", () => {
@@ -104,6 +106,11 @@
                             } else {
                                 document.getElementById("artist").textContent = "Unknown Artist";
                             }
+                            if (title && artist) {
+                                document.title = `${title} - ${artist}`;
+                            } else {
+                                document.title = "Music Player";
+                            }
                             audio.src = URL.createObjectURL(e1.target.files[0]);
                             audio.load();
 
@@ -115,22 +122,21 @@
                             };
                             cover.onload = () => {
                                 const [r, g, b] = colorThief.getColor(cover);
-                                let rgbAdd = 24;
+                                let rgbAdd = 26;
                                 document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
 
                                 if (r + g + b > 382) {
                                     document.body.style.color = "rgba(0,0,0,0.8)";
-                                    cover.style.boxShadow = `0 0 25px rgba(${r - rgbAdd * 2},${g - rgbAdd * 2},${b - rgbAdd * 2},0.5)`;
+                                    cover.style.boxShadow = `0 0 25px rgba(${r - rgbAdd * 3},${g - rgbAdd * 3},${b - rgbAdd * 3},0.5)`;
                                     progressBar.style.backgroundColor = `rgba(0,0,0,0.5)`;
                                 } else if (r + g + b < 150) {
                                     document.body.style.color = "rgba(255,255,255,0.8)";
-                                    cover.style.boxShadow = `0 0 25px rgba(${r + rgbAdd},${g + rgbAdd},${b + rgbAdd},0.5)`;
+                                    cover.style.boxShadow = `0 0 25px rgba(${r + rgbAdd * 3},${g + rgbAdd * 3},${b + rgbAdd * 3},0.5)`;
                                     progressBar.style.backgroundColor = `rgba(255,255,255,0.5)`;
-                                    document.body.style.backgroundColor = `rgb(${r + rgbAdd},${g + rgbAdd},${b + rgbAdd})`;
                                 } else {
-                                    document.body.style.color = "rgba(255,255,255,0.8)";
-                                    cover.style.boxShadow = `0 0 25px rgba(${r},${g},${b},0.5)`;
-                                    progressBar.style.backgroundColor = `rgb(${r + rgbAdd},${g + rgbAdd},${b + rgbAdd})`;
+                                    document.body.style.color = "rgba(0,0,0,0.8)";
+                                    cover.style.boxShadow = `0 0 25px rgba(${r - rgbAdd},${g - rgbAdd},${b - rgbAdd},0.5)`;
+                                    progressBar.style.backgroundColor = `rgba(0,0,0,0.5)`;
                                 }
                             };
                         },
@@ -139,6 +145,19 @@
                         },
                     });
                 });
+
+                window.onresize = () => {
+                    if (document.getElementById("title").clientWidth > document.querySelector(".details").clientWidth) {
+                        document.getElementById("title").style.animationDuration = `${document.getElementById("title").clientWidth / 50}s`;
+                    } else {
+                        document.getElementById("title").style.animationDuration = "0s";
+                    }
+                    if (document.getElementById("artist").clientWidth > document.querySelector(".details").clientWidth) {
+                        document.getElementById("artist").style.animationDuration = `${document.getElementById("artist").clientWidth / 50}s`;
+                    } else {
+                        document.getElementById("artist").style.animationDuration = "0s";
+                    }
+                };
             });
         </script>
     </head>

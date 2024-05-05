@@ -127,3 +127,18 @@ function formatTime(seconds) {
     let remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
 }
+
+/**
+ * Shuffles an array.
+ * 
+ * @param {Array} array - The array to shuffle.
+ * @returns {Array} - The shuffled array.
+ */
+function shuffleArray(array) {
+    let shuffledArray = array.slice();
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+}

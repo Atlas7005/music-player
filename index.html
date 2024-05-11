@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Music Player (visually pretty)</title>
+        <title>Atlas MP3 Player</title>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="assets/css/style.css" />
@@ -11,6 +11,8 @@
         <script src="assets/js/utils.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.4.0/color-thief.umd.min.js" integrity="sha512-+6KJrxJ2dM2fT1GH0Icwx3PE2OtAVZ0IRdgQaQoGf+gd3WSxgBpgqX/rOiUHQ9LG/c4KHeXRz8nLOg+rXL1KUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script defer>
+            const isTurntable = new URLSearchParams(window.location.search).get("turntable") === "true";
+
             window.addEventListener("load", () => {
                 window.audio = new Audio();
                 window.audio.loop = false;
@@ -38,6 +40,50 @@
                 const pause = document.getElementById("pause");
                 const forwardBtn = document.getElementById("forward");
                 const repeatBtn = document.getElementById("repeat");
+
+                if (isTurntable) {
+                    cover.classList.add("turntable");
+                    backgroundCover.style.display = "none";
+                }
+
+                if ("mediaSession" in navigator) {
+                    navigator.mediaSession.setActionHandler("play", () => {
+                        window.audio.play();
+                        navigator.mediaSession.playbackState = "playing";
+                    });
+                    navigator.mediaSession.setActionHandler("pause", () => {
+                        window.audio.pause();
+                        navigator.mediaSession.playbackState = "paused";
+                    });
+                    navigator.mediaSession.setActionHandler("previoustrack", () => {
+                        if (queue.length > 1) {
+                            currentSong = currentSong === 0 ? queue.length - 1 : currentSong - 1;
+                            loadFile(queue[currentSong], true);
+                            window.audio.play();
+                        }
+                    });
+                    navigator.mediaSession.setActionHandler("nexttrack", () => {
+                        if (queue.length > 1) {
+                            if (currentSong === queue.length - 1) {
+                                if (repeat) {
+                                    currentSong = 0;
+                                    loadFile(queue[currentSong], true);
+                                }
+                            } else {
+                                currentSong++;
+                                loadFile(queue[currentSong], true);
+                            }
+                        } else {
+                            if (repeat) {
+                                window.audio.currentTime = 0;
+                                window.audio.play();
+                            } else {
+                                window.audio.pause();
+                            }
+                        }
+                    });
+                }
+
                 shuffleBtn.addEventListener("click", () => {
                     shuffle = !shuffle;
                     if (shuffle) {
@@ -117,7 +163,8 @@
                     progressBar.style.width = `${progress}%`;
                     currentTimeEl.textContent = formatTime(window.audio.currentTime);
                     durationEl.textContent = formatTime(window.audio.duration);
-                    backgroundCover.style.transform = `rotate(${window.audio.currentTime * 6}deg)`;
+                    if (!isTurntable) backgroundCover.style.transform = `rotate(${window.audio.currentTime * 6}deg)`;
+                    else cover.style.transform = `rotate(${window.audio.currentTime * 6}deg)`;
                 });
 
                 window.audio.addEventListener("ended", () => {
@@ -228,7 +275,7 @@
                             if (title && artist) {
                                 document.title = `${title} - ${artist}`;
                             } else {
-                                document.title = "Music Player";
+                                document.title = "Atlas MP3 Player";
                             }
                             window.audio.src = URL.createObjectURL(file);
                             window.audio.load();
@@ -241,6 +288,16 @@
                                 } else {
                                     pause.classList.remove("fa-circle-pause");
                                     pause.classList.add("fa-circle-play");
+                                }
+
+                                if ("mediaSession" in navigator) {
+                                    navigator.mediaSession.metadata = new MediaMetadata({
+                                        title: title || "Unknown Title",
+                                        artist: artist || "Unknown Artist",
+                                        artwork: [{ src: cover.src, sizes: "512x512", type: picture.format }],
+                                    });
+
+                                    navigator.mediaSession.playbackState = "playing";
                                 }
                             };
                             cover.onload = () => {
@@ -268,7 +325,7 @@
                                 } else if (r + g + b < 150) {
                                     document.body.style.color = "rgba(255,255,255,0.8)";
                                     cover.style.boxShadow = `0 0 25px rgba(${r + rgbAdd * 3},${g + rgbAdd * 3},${b + rgbAdd * 3},0.5)`;
-                                    progressBar.style.backgroundColor = `rgba(255,255,255,0.5)`;
+                                    progressBar.style.backgroundColor = `rgba(255,255,255,0.8)`;
 
                                     if (shuffle) {
                                         shuffleBtn.style.color = `rgba(255,255,255,1)`;

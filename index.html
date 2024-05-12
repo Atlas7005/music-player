@@ -23,6 +23,7 @@
                 let ogQueue = [];
                 let queue = [];
                 let currentSong = 0;
+                let rotation = 0;
                 let shuffle = false;
                 let repeat = false;
                 let dominantColor;
@@ -163,8 +164,9 @@
                     progressBar.style.width = `${progress}%`;
                     currentTimeEl.textContent = formatTime(window.audio.currentTime);
                     durationEl.textContent = formatTime(window.audio.duration);
-                    if (!isTurntable) backgroundCover.style.transform = `rotate(${window.audio.currentTime * 6}deg)`;
-                    else cover.style.transform = `rotate(${window.audio.currentTime * 6}deg)`;
+                    rotation += 8;
+                    if (!isTurntable) backgroundCover.style.transform = `rotate(${rotation}deg)`;
+                    else cover.style.transform = `rotate(${rotation}deg)`;
                 });
 
                 window.audio.addEventListener("ended", () => {

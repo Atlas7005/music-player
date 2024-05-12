@@ -79,6 +79,7 @@ main img#cover.turntable {
     border-radius: 50%;
     transition: transform 0.5s linear;
     -webkit-mask-image: radial-gradient(circle 20px at 50% 50%, transparent 20px, purple 0);
+    mask-image: radial-gradient(circle 20px at 50% 50%, transparent 20px, purple 0);
 }
 
 main .details {

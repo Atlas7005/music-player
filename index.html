@@ -164,7 +164,7 @@
                     progressBar.style.width = `${progress}%`;
                     currentTimeEl.textContent = formatTime(window.audio.currentTime);
                     durationEl.textContent = formatTime(window.audio.duration);
-                    rotation += 8;
+                    rotation += 4;
                     if (!isTurntable) backgroundCover.style.transform = `rotate(${rotation}deg)`;
                     else cover.style.transform = `rotate(${rotation}deg)`;
                 });

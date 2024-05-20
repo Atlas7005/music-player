@@ -130,7 +130,7 @@ function formatTime(seconds) {
 
 /**
  * Shuffles an array.
- * 
+ *
  * @param {Array} array - The array to shuffle.
  * @returns {Array} - The shuffled array.
  */
@@ -141,4 +141,16 @@ function shuffleArray(array) {
         [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
     }
     return shuffledArray;
+}
+
+/**
+ * Changes the favicon to the specified image.
+ *
+ * @param {string} url - The URL of the image to set as the favicon.
+ */
+function changeFavicon(url) {
+    let link = document.querySelector("link[rel*='icon']") || document.createElement("link");
+    link.rel = "icon";
+    link.href = url;
+    document.getElementsByTagName("head")[0].appendChild(link);
 }

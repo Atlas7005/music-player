@@ -254,6 +254,7 @@
                                 }
                                 cover.src = `data:${picture.format};base64,${window.btoa(base64String)}`;
                                 backgroundCover.src = `data:${picture.format};base64,${window.btoa(base64String)}`;
+                                changeFavicon(`data:${picture.format};base64,${window.btoa(base64String)}`);
                             } else {
                                 cover.src = "assets/no-cover.png";
                                 backgroundCover.src = "assets/no-cover.png";
